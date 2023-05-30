@@ -2,6 +2,7 @@ from modules import wordlist, logger
 
 logger = logger.initialize_logger()
 
+
 class TypingModule:
     '''The core typing module for all typing activities.
     '''
@@ -20,7 +21,7 @@ class TypingModule:
     def _split_lines(self):
         '''Split words in the wordlist into terminal friendly limits.
         '''
-        
+
         temp_wl = self._wl.copy()
         count = self._TERMINAL_LINE_COUNT
 
@@ -41,10 +42,10 @@ class TypingModule:
         return lines
 
     def _validate_word(
-        self, 
-        usr_input: str, 
-        line_cur: int, 
-        word_cur:int
+        self,
+        usr_input: str,
+        line_cur: int,
+        word_cur: int
     ) -> bool:
         '''Validation against the specified word in the list.
         Args:
