@@ -15,7 +15,7 @@ def initialize_logger(
     further configured if required by specifying required parameters.
     Args:
         name: Name of the logger.
-        debug_level: Debug level for the logger, takes in values in intervals 
+        debug_level: Debug level for the logger, takes in values in intervals
             of 10 from 0 to 50.
         filename: Name of the log file.
         console_logging: Enable log records to be displayed in the console.
@@ -26,6 +26,11 @@ def initialize_logger(
     """
 
     logger = logging.getLogger(name)
+
+    # return logger if it exists, allow submodules to use same logger
+    if logger.hasHandlers():
+        return logger
+
     logger.setLevel(debug_level)
     logger.propagate = False
 
