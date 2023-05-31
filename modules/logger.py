@@ -2,6 +2,19 @@ import logging
 import sys
 
 
+def set_and_add_handler(
+    logger: logging.Logger,
+    handler: logging.Handler,
+    debug_level: int
+) -> None:
+    handler.setLevel(debug_level)
+    handler.setFormatter(logging.Formatter(
+        '%(asctime)s [%(threadName)s] %(filename)-20s.\
+        %(funcName)-20s %(levelname)s  %(message)s'
+    ))
+    logger.addHandler(handler)
+
+
 def initialize_logger(
     name: str = None,
     debug_level: int = 10,
@@ -34,20 +47,12 @@ def initialize_logger(
     logger.setLevel(debug_level)
     logger.propagate = False
 
-    file_handler = logging.FileHandler(filename, **file_arguments)
-    console_handler = logging.StreamHandler(sys.stdout)
-
-    for handler in [file_handler, console_handler]:
-        handler.setLevel(debug_level)
-        handler.setFormatter(logging.Formatter(
-            '%(asctime)s [%(threadName)s] %(filename)-20s.\
-            %(funcName)-20s %(levelname)s  %(message)s'
-        ))
-
     if file_logging:
-        logger.addHandler(file_handler)
+        handler = logging.FileHandler(filename, **file_arguments)
+        set_and_add_handler(logger, handler, debug_level)
 
     if console_logging:
-        logger.addHandler(console_handler)
+        handler = logging.StreamHandler(sys.stdout)
+        set_and_add_handler(logger, handler, debug_level)
 
     return logger
